@@ -10,9 +10,13 @@ from utils.url_creator import UrlCreator
 ### PATHS 
 
 FILES_PATH = os.path.join(os.path.dirname(__file__), 'files')
+CACHE_PATH = os.path.join(FILES_PATH, 'cache')
 RESOURCES_PATH = os.path.join(FILES_PATH, 'resources')
 CONFIG_PATH = os.path.join(RESOURCES_PATH, 'config.json')
-IGNORED_USERS_PATH = os.path.join(RESOURCES_PATH, 'ignored_users.json')
+IGNORED_USERS_PATH = os.path.join(CACHE_PATH, 'ignored_users.json')
+
+if not os.path.exists(CACHE_PATH):
+    os.makedirs(CACHE_PATH)
 
 if not os.path.exists(FILES_PATH):
     os.makedirs(FILES_PATH)

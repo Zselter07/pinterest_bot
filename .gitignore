@@ -5,8 +5,7 @@ __pycache__/
 
 # Custom
 
-# cookies/*
-ignored_users.json
+# cache/*
 # repinners/*
 
 # C extensions
