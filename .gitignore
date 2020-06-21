@@ -5,8 +5,8 @@ __pycache__/
 
 # Custom
 
-# cache/*
-# repinners/*
+cache/*
+repinners/*
 
 # C extensions
 *.so
