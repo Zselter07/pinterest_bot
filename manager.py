@@ -1,7 +1,7 @@
 import os, random, json
 from typing import List, Dict
 
-from kov_utils import kjson
+from kcu import kjson
 from kov_utils.sh import sh
 
 from bot import Bot
@@ -15,17 +15,9 @@ RESOURCES_PATH = os.path.join(FILES_PATH, 'resources')
 CONFIG_PATH = os.path.join(RESOURCES_PATH, 'config.json')
 IGNORED_USERS_PATH = os.path.join(CACHE_PATH, 'ignored_users.json')
 
-if not os.path.exists(CACHE_PATH):
-    os.makedirs(CACHE_PATH)
-
-if not os.path.exists(FILES_PATH):
-    os.makedirs(FILES_PATH)
-
-if not os.path.exists(RESOURCES_PATH):
-    os.makedirs(RESOURCES_PATH)
-
-if not os.path.exists(IGNORED_USERS_PATH):
-    kjson.save(IGNORED_USERS_PATH, '{}')
+os.makedirs(CACHE_PATH, exist_ok=True)
+os.makedirs(FILES_PATH, exist_ok=True)
+os.makedirs(RESOURCES_PATH, exist_ok=True)
 
 ### create bot objects from config
 
@@ -48,7 +40,7 @@ def bots_flow(bots_not_used: List[Bot], gr_nr: int=2):
     ### mainbot task, load ignored users
 
     bots_needing_followers = [mainbot]
-    ignored_users = kjson.load(IGNORED_USERS_PATH)
+    ignored_users = kjson.load(IGNORED_USERS_PATH, default_value={}, save_if_not_exists=True)
 
     main_posted_pin_id, total_users_to_follow, ignored_users = mainbot.do_mainbot_tasks('/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'this title is cool', 'my main board', 'baby gift', ignored_users, number_of_users_to_follow=NUMBER_OF_USERS_TO_FOLLOW)
     kjson.save(IGNORED_USERS_PATH, ignored_users)
@@ -83,7 +75,7 @@ def bots_flow(bots_not_used: List[Bot], gr_nr: int=2):
 
             ### daily task 
 
-            path_of_bot = os.path.join(RESOURCES_PATH, 'repinners', bot.username)
+            path_of_bot = os.path.join(CACHE_PATH, 'repinners', bot.username)
             path_of_users_to_unfollow = os.path.join(path_of_bot, 'users_to_unfollow.json')
 
             if not os.path.exists(path_of_bot):
