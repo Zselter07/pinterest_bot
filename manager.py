@@ -1,8 +1,7 @@
 import os, random, json
 from typing import List, Dict
 
-from kcu import kjson
-from kov_utils.sh import sh
+from kcu import kjson, kpath
 
 from bot import Bot
 from utils.url_creator import UrlCreator
@@ -42,7 +41,7 @@ def bots_flow(bots_not_used: List[Bot], gr_nr: int=2):
     bots_needing_followers = [mainbot]
     ignored_users = kjson.load(IGNORED_USERS_PATH, default_value={}, save_if_not_exists=True)
 
-    main_posted_pin_id, total_users_to_follow, ignored_users = mainbot.do_mainbot_tasks('/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'this title is cool', 'my main board', 'baby gift', ignored_users, number_of_users_to_follow=NUMBER_OF_USERS_TO_FOLLOW)
+    main_posted_pin_id, total_users_to_follow, ignored_users = mainbot.do_mainbot_tasks('/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'this title is cool', 'my main board', 'baby gift', ignored_users,number_of_users_to_follow=NUMBER_OF_USERS_TO_FOLLOW)
     kjson.save(IGNORED_USERS_PATH, ignored_users)
     bot_and_pin_id_pairs = [(mainbot, main_posted_pin_id)]
 
