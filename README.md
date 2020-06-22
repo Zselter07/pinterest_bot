@@ -2,8 +2,11 @@
 
 ## Flow
 
-![](resources/images/Pinterest%20bot.png)
+Pinterest repinner
 
-Mainbot - daily task - post pin, get users from boards.
+<img src="files/resources/images/Pinterest%20bot.png" width="500">
 
-Secondary bots - daily task - repin pins from 
+
+Mainbot - daily task - post pin, get users from boards
+
+Secondary bots - daily task - repin pins from their superior bot, follow and unfollow users
