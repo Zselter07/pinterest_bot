@@ -34,7 +34,7 @@ mainbot = Bot(accs_info[0])
 nr_of_users_to_follow_per_bot = 2
 NUMBER_OF_USERS_TO_FOLLOW = nr_of_users_to_follow_per_bot * len(bots_container) 
 
-def bots_flow(bots_not_used: List[Bot], gr_nr: int=2):
+def bots_flow(bots_not_used: List[Bot], gr_nr: int=2) -> None:
 
     ### mainbot task, load ignored users
 
