@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Callable
 from datetime import datetime, timedelta, date
 import os.path, time, random
 
@@ -122,7 +122,7 @@ class Bot:
         number_of_users_to_follow: int,
         about_text: str = None,
         destination_link_text: str = None
-    ) -> Optional[(str, List[str], List[str])]:
+    ) -> Tuple[Optional[str], List[str], List[str]]:
         self.login()
         print('logged in to mainbot')
         pin_id = self.post_pin(file_path, title_text, board_name_to_post_to, about_text, destination_link_text)

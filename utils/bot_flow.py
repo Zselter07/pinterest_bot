@@ -3,7 +3,7 @@ import os, time
 
 from kcu import kjson
 
-from .objects import Bot
+from .objects.bot import Bot
 
 def bots_flow(
     main_bot: Bot,
@@ -13,11 +13,11 @@ def bots_flow(
     main_board_name: str,
     search_term_for_boards: str,
     ignored_users: List[str],
-    save_ignored_users: Callable[List[str], None],
+    save_ignored_users: Callable[[List[str]], None],
     NR_OF_USERS_TO_FOLLOW_PER_BOT: int,
     SECONDS_UNTIL_UNFOLLOW: int,
     NUMBER_OF_RANDOM_PINS_TO_REPIN: int,
-    gr_nr: int=2,
+    gr_nr: int,
 ) -> None:
 
     ### mainbot task, load ignored users
@@ -54,7 +54,7 @@ def bots_flow(
                 users_to_follow.append(total_users_to_follow.pop())
 
             ### daily task 
-            
+
             currently_followed_users = bot.currently_followed_users
             print('users to unfollow after loading in manager: ', currently_followed_users)
             users_to_unfollow = []

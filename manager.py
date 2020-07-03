@@ -41,10 +41,12 @@ NUMBER_OF_RANDOM_PINS_TO_REPIN = 3
 ignored_users = kjson.load(IGNORED_USERS_PATH, default_value={}, save_if_not_exists=True)
 
 def main_flow():
-    def save_ignored_users(params: List[str]):
-        kjson.save(IGNORED_USERS_PATH, params)
-        
-    bots_flow(main_bot, repinner_bots, '/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'testing this title', 'this is the main board', 'baby clothes', ignored_users, save_ignored_users, NR_OF_USERS_TO_FOLLOW_PER_BOT, SECONDS_UNTIL_UNFOLLOW, NUMBER_OF_RANDOM_PINS_TO_REPIN)
+    def save_ignored_users(ignored_users: List[str]=ignored_users):
+        kjson.save(IGNORED_USERS_PATH, ignored_users)
+
+    bots_flow(main_bot, repinner_bots, '/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'testing this title', 'this is the main board', 'baby clothes', ignored_users, save_ignored_users, NR_OF_USERS_TO_FOLLOW_PER_BOT, SECONDS_UNTIL_UNFOLLOW, NUMBER_OF_RANDOM_PINS_TO_REPIN, 3)
+
+main_flow()
 
     
 
