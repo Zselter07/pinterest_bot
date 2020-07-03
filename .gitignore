@@ -6,6 +6,8 @@ __pycache__/
 # Custom
 
 */cache/*
+*/resources/accs.json
+*/resources/images/*
 
 # C extensions
 *.so
