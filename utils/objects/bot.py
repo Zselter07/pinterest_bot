@@ -93,10 +93,11 @@ class Bot:
         ### FOLLOW/UNFOLLOW SESSION ### 
 
         for user in users_to_unfollow:
-            print('the user to be followed:', user)
+            print('the user to be unfollowed:', user)
             
             if self.unfollow(user):
                 print('unfollowed:', user)
+                del self.currently_followed_users[user]
 
         for user in users_to_follow:
             print('the user to be followed:', user)

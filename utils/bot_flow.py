@@ -23,7 +23,7 @@ def bots_flow(
     ### mainbot task, load ignored users
     number_of_total_users_to_follow = NR_OF_USERS_TO_FOLLOW_PER_BOT * len(bots_not_used)
     bots_needing_followers = [main_bot]
-    main_posted_pin_id, total_users_to_follow, ignored_users = main_bot.do_mainbot_tasks(image_to_post_path, post_title, main_board_name, search_term_for_boards, ignored_users, number_of_users_to_follow=number_of_total_users_to_follow)
+    main_posted_pin_id, total_users_to_follow, ignored_users = main_bot.do_mainbot_tasks(image_to_post_path, post_title, main_board_name, search_term_for_boards, ignored_users, number_of_total_users_to_follow)
     # kjson.save(IGNORED_USERS_PATH, ignored_users)
     save_ignored_users(ignored_users)
 
@@ -60,18 +60,13 @@ def bots_flow(
             users_to_unfollow = []
 
             for user, seconds_when_followed in currently_followed_users.items():
-                if seconds_when_followed + SECONDS_UNTIL_UNFOLLOW <= int(time.time()):
+                if int(seconds_when_followed) + SECONDS_UNTIL_UNFOLLOW <= int(time.time()):
                     users_to_unfollow.append(user)
 
-            bot_pin_id, new_followed_users = bot.do_repinner_daily_tasks(users_to_follow, 
-                                                                        users_to_unfollow, NUMBER_OF_RANDOM_PINS_TO_REPIN, posted_pin_id,main_board_name)
-
+            print('users to follow:', users_to_follow)
+            print('users to unfollow:', users_to_unfollow)
+            bot_pin_id = bot.do_repinner_daily_tasks(users_to_follow, users_to_unfollow, NUMBER_OF_RANDOM_PINS_TO_REPIN, posted_pin_id, main_board_name)
             bot_and_pin_id_pairs[bot] = bot_pin_id
-            currently_followed_users.update(new_followed_users)
-
-            ### save users to unfollow json ### 
-
-            kjson.save(bot.followed_users_path, currently_followed_users) 
 
             ### update lists
 

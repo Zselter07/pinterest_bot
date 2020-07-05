@@ -28,7 +28,18 @@ os.makedirs(REPINNERS_PATH, exist_ok=True)
 ### create bot objects from config
 
 accs_info = kjson.load(ACCS_PATH)
-all_bots = [Bot(acc_detail, os.path.join(COOKIES_BASE_PATH, acc_detail['username']), EXTENSIONS_BASE_PATH, os.path.join(REPINNERS_PATH, acc_detail['username'])) for acc_detail in accs_info]
+# all_bots = [Bot(acc_detail, os.path.join(COOKIES_BASE_PATH, acc_detail['username']), EXTENSIONS_BASE_PATH, os.path.join(REPINNERS_PATH, acc_detail['username'], 'currently_followed_users.json')) for acc_detail in accs_info]
+all_bots = []
+
+for acc_detail in accs_info: 
+    bot_folder_path = os.path.join(REPINNERS_PATH, acc_detail['username'])
+    
+    if not os.path.exists(bot_folder_path):
+        os.makedirs(bot_folder_path)
+        kjson.save(os.path.join(bot_folder_path, 'currently_followed_users.json'), {})
+    
+    all_bots.append(Bot(acc_detail, os.path.join(COOKIES_BASE_PATH, acc_detail['username']), EXTENSIONS_BASE_PATH, os.path.join(REPINNERS_PATH, acc_detail['username'], 'currently_followed_users.json')))
+
 main_bot = all_bots[0]
 repinner_bots = all_bots[1:]
 
@@ -47,6 +58,3 @@ def main_flow():
     bots_flow(main_bot, repinner_bots, '/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'testing this title', 'this is the main board', 'baby clothes', ignored_users, save_ignored_users, NR_OF_USERS_TO_FOLLOW_PER_BOT, SECONDS_UNTIL_UNFOLLOW, NUMBER_OF_RANDOM_PINS_TO_REPIN, 3)
 
 main_flow()
-
-    
-
