@@ -68,14 +68,13 @@ class Bot:
     ) -> Tuple[Optional[str], Dict[str, int]]:
         self.login()
         print('logged in to secondary bot')
-        # self.session.disable_pop_up()
 
         ### REPIN SESSION ### 
 
         home_feed_pins = random.choices(self.get_pins_from_home_feed(), k=number_of_random_pins_to_repin)
 
         if home_feed_pins is not None:
-            self.repin(home_feed_pins[0], first_random_board) # do a separate pin so we have atleast 2 boards per bot.
+            self.repin(home_feed_pins[0], first_random_board) #do a separate pin so we have atleast 2 boards per bot as Pinterest acts differently this way.
             for home_pin in home_feed_pins[1:]:
                 feed_pin_status, _ = self.repin(home_pin, second_random_board)
                 if feed_pin_status:
@@ -104,11 +103,10 @@ class Bot:
 
             if self.follow(user):
                 print('followed:', user)
-                self.currently_followed_users[user] = int(time.time())
+                self.currently_followed_users[user] = time.time()
         
         kjson.save(self.followed_users_path, self.currently_followed_users)
-
-        # self.quit()
+        self.quit()
         rand.sleep(0.5, 1)
 
         return bot_pin_id
@@ -118,8 +116,8 @@ class Bot:
         file_path: str,
         title_text: str,
         board_name_to_post_to: str,
-        board_search_term_to_get_users: str, # search for boards after a search term
-        ignored_users: List[str], # already followed users
+        board_search_term_to_get_users: str,
+        ignored_users: List[str],
         number_of_users_to_follow: int,
         about_text: str = None,
         destination_link_text: str = None
@@ -128,9 +126,8 @@ class Bot:
         print('logged in to mainbot')
         pin_id = self.post_pin(file_path, title_text, board_name_to_post_to, about_text, destination_link_text)
         print('pin id for mainbot is:', pin_id)
-        rand.sleep(2.5, 3)
+        rand.sleep(2, 3)
         user_and_board_names = self.search_pinterest_boards(board_search_term_to_get_users)
-        print(user_and_board_names)
 
         for user_name, board_name in user_and_board_names:
             users_to_follow, ignored_users = self.get_board_followers(user_name, board_name, ignored_users, number_of_users_to_follow=number_of_users_to_follow)
@@ -143,4 +140,4 @@ class Bot:
         print('users_to_follow:', users_to_follow)
         self.quit()
 
-        return (pin_id, users_to_follow, ignored_users)
+        return pin_id, users_to_follow, ignored_users

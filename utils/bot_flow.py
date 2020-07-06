@@ -24,7 +24,6 @@ def bots_flow(
     number_of_total_users_to_follow = NR_OF_USERS_TO_FOLLOW_PER_BOT * len(bots_not_used)
     bots_needing_followers = [main_bot]
     main_posted_pin_id, total_users_to_follow, ignored_users = main_bot.do_mainbot_tasks(image_to_post_path, post_title, main_board_name, search_term_for_boards, ignored_users, number_of_total_users_to_follow)
-    # kjson.save(IGNORED_USERS_PATH, ignored_users)
     save_ignored_users(ignored_users)
 
     bot_and_pin_id_pairs = {
@@ -35,7 +34,6 @@ def bots_flow(
     while len(bots_not_used) > 0:
 
         ### get the pin id for the bot that will get repinned 
-
         bot_needing_followers = bots_needing_followers[0]
 
         for bot, pin_id in bot_and_pin_id_pairs.items():
@@ -47,20 +45,17 @@ def bots_flow(
         for bot in list(bots_not_used):
 
             ### create separate lists of users to follow for each bot and remove those from total users to follow ###
-
             users_to_follow = []
             
             for _ in range(NR_OF_USERS_TO_FOLLOW_PER_BOT):
                 users_to_follow.append(total_users_to_follow.pop())
 
             ### daily task 
-
             currently_followed_users = bot.currently_followed_users
-            print('users to unfollow after loading in manager: ', currently_followed_users)
             users_to_unfollow = []
 
             for user, seconds_when_followed in currently_followed_users.items():
-                if int(seconds_when_followed) + SECONDS_UNTIL_UNFOLLOW <= int(time.time()):
+                if seconds_when_followed + SECONDS_UNTIL_UNFOLLOW <= time.time():
                     users_to_unfollow.append(user)
 
             print('users to follow:', users_to_follow)
