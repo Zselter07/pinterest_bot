@@ -138,6 +138,6 @@ class Bot:
             break
 
         print('users_to_follow:', users_to_follow)
-        self.quit()
+        # self.quit()
 
         return pin_id, users_to_follow, ignored_users

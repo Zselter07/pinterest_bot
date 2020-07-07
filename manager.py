@@ -7,13 +7,13 @@ from utils.objects.bot import Bot
 from utils.url_creator import UrlCreator
 from utils.bot_flow import bots_flow
 
-### CONFIG ### 
+### CONFIG ###
 
 NR_OF_USERS_TO_FOLLOW_PER_BOT = 5
 SECONDS_UNTIL_UNFOLLOW = 4*24*60*60
 NUMBER_OF_RANDOM_PINS_TO_REPIN = 1
 
-### PATHS 
+### PATHS
 
 FILES_PATH = os.path.join(os.path.dirname(__file__), 'files')
 CACHE_PATH = os.path.join(FILES_PATH, 'cache')
@@ -51,6 +51,6 @@ def main_flow():
     def save_ignored_users(ignored_users: List[str]=ignored_users):
         kjson.save(IGNORED_USERS_PATH, ignored_users)
 
-    bots_flow(main_bot, repinner_bots, '/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'testing this title', 'this is the main board', 'baby clothes', ignored_users, save_ignored_users, NR_OF_USERS_TO_FOLLOW_PER_BOT, SECONDS_UNTIL_UNFOLLOW, NUMBER_OF_RANDOM_PINS_TO_REPIN, 2)
+    bots_flow(main_bot, repinner_bots, '/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'testing this title', 'this is the main board', 'men clothes', ignored_users, save_ignored_users, NR_OF_USERS_TO_FOLLOW_PER_BOT, SECONDS_UNTIL_UNFOLLOW, NUMBER_OF_RANDOM_PINS_TO_REPIN, 2)
 
 main_flow()
