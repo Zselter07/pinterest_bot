@@ -47,7 +47,7 @@ def bots_flow(
             ### create separate lists of users to follow for each bot and remove those from total users to follow ###
             users_to_follow = []
             
-            for _ in range(NR_OF_USERS_TO_FOLLOW_PER_BOT):
+            for _ in range(nr_of_users_to_follow_per_bot):
                 users_to_follow.append(total_users_to_follow.pop())
 
             ### daily task 
