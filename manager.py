@@ -9,10 +9,10 @@ from utils.bot_flow import bots_flow
 
 ### CONFIG ###
 
-NR_OF_USERS_TO_FOLLOW_PER_BOT = 5
-SECONDS_UNTIL_UNFOLLOW = 4*24*60*60
-NUMBER_OF_RANDOM_PINS_TO_REPIN = 1
-CURRENTLY_FOLLOWED_USERS = 'currently_followed_users.json'
+NR_OF_USERS_TO_FOLLOW_PER_BOT       = 5
+SECONDS_UNTIL_UNFOLLOW              = 4*24*60*60
+NUMBER_OF_RANDOM_PINS_TO_REPIN      = 1
+CURRENTLY_FOLLOWED_USERS_FILE_NAME  = 'currently_followed_users.json'
 
 ### PATHS
 
@@ -37,21 +37,41 @@ all_bots = []
 
 for acc_detail in accs_info:
     bot_folder_path = os.path.join(REPINNERS_PATH, acc_detail['username'])
-    
+
     if not os.path.exists(bot_folder_path):
         os.makedirs(bot_folder_path)
-        kjson.save(os.path.join(bot_folder_path, CURRENTLY_FOLLOWED_USERS), {})
-    
-    all_bots.append(Bot(acc_detail, os.path.join(COOKIES_BASE_PATH, acc_detail['username']), EXTENSIONS_BASE_PATH, os.path.join(REPINNERS_PATH, acc_detail['username'], CURRENTLY_FOLLOWED_USERS)))
+        kjson.save(os.path.join(bot_folder_path, CURRENTLY_FOLLOWED_USERS_FILE_NAME), {})
+
+    all_bots.append(
+        Bot(
+            acc_detail,
+            os.path.join(COOKIES_BASE_PATH, acc_detail['username']),
+            EXTENSIONS_BASE_PATH,
+            os.path.join(bot_folder_path, CURRENTLY_FOLLOWED_USERS_FILE_NAME)
+        )
+    )
 
 main_bot = all_bots[0]
 repinner_bots = all_bots[1:]
 ignored_users = kjson.load(IGNORED_USERS_PATH, default_value={}, save_if_not_exists=True)
 
 def main_flow():
-    def save_ignored_users(ignored_users: List[str]=ignored_users):
+    def save_ignored_users(ignored_users: List[str]):
         kjson.save(IGNORED_USERS_PATH, ignored_users)
 
-    bots_flow(main_bot, repinner_bots, '/Users/macbook/github_desktop/pinterest_bot/files/resources/images/image.jpg', 'testing this title', 'this is the main board', 'men clothes', ignored_users, save_ignored_users, NR_OF_USERS_TO_FOLLOW_PER_BOT, SECONDS_UNTIL_UNFOLLOW, NUMBER_OF_RANDOM_PINS_TO_REPIN, 2)
+    bots_flow(
+        main_bot=main_bot,
+        bots_not_used=repinner_bots,
+        image_to_post_path=os.path.join(FILES_PATH, 'resources/images/image.jpg'),
+        post_title='testing this title',
+        main_board_name='this is the main board',
+        search_term_for_boards='this is the main board',
+        ignored_users='men clothes',
+        ignored_users_callback=ignored_users,
+        nr_of_users_to_follow_per_bot=save_ignored_users,
+        seconds_until_unfollow=NR_OF_USERS_TO_FOLLOW_PER_BOT,
+        number_of_random_pins_to_repin=NUMBER_OF_RANDOM_PINS_TO_REPIN,
+        gr_nr=2
+    )
 
 main_flow()

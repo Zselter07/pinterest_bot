@@ -27,46 +27,47 @@ def bots_flow(
     ignored_users_callback(ignored_users)
 
     bot_and_pin_id_pairs = {
-        main_bot: main_posted_pin_id
+        main_bot.username: main_posted_pin_id
     }
     print('main posted pin id:', main_posted_pin_id, 'total users to follow:', total_users_to_follow, 'ignored users:', ignored_users)
 
     while len(bots_not_used) > 0:
-
         ### get the pin id for the bot that will get repinned 
         bot_needing_followers = bots_needing_followers[0]
 
-        for bot, pin_id in bot_and_pin_id_pairs.items():
-            if bot_needing_followers == bot:
+        for bot_username, pin_id in bot_and_pin_id_pairs.items():
+            if bot_needing_followers.username == bot_username:
                 posted_pin_id = pin_id
 
         gr_nr_counter = 0
 
         for bot in list(bots_not_used):
-
             ### create separate lists of users to follow for each bot and remove those from total users to follow ###
             users_to_follow = []
-            
-            for _ in range(nr_of_users_to_follow_per_bot):
-                users_to_follow.append(total_users_to_follow.pop())
+
+            users_to_follow.extend(total_users_to_follow[:nr_of_users_to_follow_per_bot])
+            total_users_to_follow = total_users_to_follow[nr_of_users_to_follow_per_bot:]
 
             ### daily task 
-            currently_followed_users = bot.currently_followed_users
             users_to_unfollow = []
 
-            for user, seconds_when_followed in currently_followed_users.items():
-                if seconds_when_followed + seconds_until_unfollow <= time.time():
-                    users_to_unfollow.append(user)
+            for user_name, timestamp_when_followed in bot.currently_followed_users.items():
+                if timestamp_when_followed + seconds_until_unfollow <= time.time():
+                    users_to_unfollow.append(user_name)
 
             print('users to follow:', users_to_follow)
             print('users to unfollow:', users_to_unfollow)
             bot_pin_id = bot.do_repinner_daily_tasks(users_to_follow, users_to_unfollow, number_of_random_pins_to_repin, posted_pin_id, main_board_name)
-            bot_and_pin_id_pairs[bot] = bot_pin_id
+
+            bots_not_used.remove(bot)
+
+            if bot_pin_id is None:
+                continue
+
+            bot_and_pin_id_pairs[bot.username] = bot_pin_id
 
             ### update lists
-
             bots_needing_followers.append(bot)
-            bots_not_used.remove(bot)
             gr_nr_counter += 1
 
             if gr_nr_counter == gr_nr:
