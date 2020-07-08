@@ -13,18 +13,18 @@ def bots_flow(
     main_board_name: str,
     search_term_for_boards: str,
     ignored_users: List[str],
-    save_ignored_users: Callable[[List[str]], None],
-    NR_OF_USERS_TO_FOLLOW_PER_BOT: int,
-    SECONDS_UNTIL_UNFOLLOW: int,
-    NUMBER_OF_RANDOM_PINS_TO_REPIN: int,
+    ignored_users_callback: Callable[[List[str]], None],
+    nr_of_users_to_follow_per_bot: int,
+    seconds_until_unfollow: int,
+    number_of_random_pins_to_repin: int,
     gr_nr: int,
 ) -> None:
 
     ### mainbot task, load ignored users
-    number_of_total_users_to_follow = NR_OF_USERS_TO_FOLLOW_PER_BOT * len(bots_not_used)
+    number_of_total_users_to_follow = nr_of_users_to_follow_per_bot * len(bots_not_used)
     bots_needing_followers = [main_bot]
     main_posted_pin_id, total_users_to_follow, ignored_users = main_bot.do_mainbot_tasks(image_to_post_path, post_title, main_board_name, search_term_for_boards, ignored_users, number_of_total_users_to_follow)
-    save_ignored_users(ignored_users)
+    ignored_users_callback(ignored_users)
 
     bot_and_pin_id_pairs = {
         main_bot: main_posted_pin_id
@@ -55,12 +55,12 @@ def bots_flow(
             users_to_unfollow = []
 
             for user, seconds_when_followed in currently_followed_users.items():
-                if seconds_when_followed + SECONDS_UNTIL_UNFOLLOW <= time.time():
+                if seconds_when_followed + seconds_until_unfollow <= time.time():
                     users_to_unfollow.append(user)
 
             print('users to follow:', users_to_follow)
             print('users to unfollow:', users_to_unfollow)
-            bot_pin_id = bot.do_repinner_daily_tasks(users_to_follow, users_to_unfollow, NUMBER_OF_RANDOM_PINS_TO_REPIN, posted_pin_id, main_board_name)
+            bot_pin_id = bot.do_repinner_daily_tasks(users_to_follow, users_to_unfollow, number_of_random_pins_to_repin, posted_pin_id, main_board_name)
             bot_and_pin_id_pairs[bot] = bot_pin_id
 
             ### update lists

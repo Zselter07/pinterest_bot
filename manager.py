@@ -12,6 +12,7 @@ from utils.bot_flow import bots_flow
 NR_OF_USERS_TO_FOLLOW_PER_BOT = 5
 SECONDS_UNTIL_UNFOLLOW = 4*24*60*60
 NUMBER_OF_RANDOM_PINS_TO_REPIN = 1
+CURRENTLY_FOLLOWED_USERS = 'currently_followed_users.json'
 
 ### PATHS
 
@@ -34,14 +35,14 @@ os.makedirs(REPINNERS_PATH, exist_ok=True)
 accs_info = kjson.load(ACCS_PATH)
 all_bots = []
 
-for acc_detail in accs_info: 
+for acc_detail in accs_info:
     bot_folder_path = os.path.join(REPINNERS_PATH, acc_detail['username'])
     
     if not os.path.exists(bot_folder_path):
         os.makedirs(bot_folder_path)
-        kjson.save(os.path.join(bot_folder_path, 'currently_followed_users.json'), {})
+        kjson.save(os.path.join(bot_folder_path, CURRENTLY_FOLLOWED_USERS), {})
     
-    all_bots.append(Bot(acc_detail, os.path.join(COOKIES_BASE_PATH, acc_detail['username']), EXTENSIONS_BASE_PATH, os.path.join(REPINNERS_PATH, acc_detail['username'], 'currently_followed_users.json')))
+    all_bots.append(Bot(acc_detail, os.path.join(COOKIES_BASE_PATH, acc_detail['username']), EXTENSIONS_BASE_PATH, os.path.join(REPINNERS_PATH, acc_detail['username'], CURRENTLY_FOLLOWED_USERS)))
 
 main_bot = all_bots[0]
 repinner_bots = all_bots[1:]
