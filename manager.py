@@ -64,12 +64,12 @@ def main_flow():
         bots_not_used=repinner_bots,
         image_to_post_path=os.path.join(FILES_PATH, 'resources/images/image.jpg'),
         post_title='testing this title',
-        main_board_name='this is the main board',
-        search_term_for_boards='this is the main board',
-        ignored_users='men clothes',
-        ignored_users_callback=ignored_users,
-        nr_of_users_to_follow_per_bot=save_ignored_users,
-        seconds_until_unfollow=NR_OF_USERS_TO_FOLLOW_PER_BOT,
+        main_board_name='this is the main',
+        search_term_for_boards='men clothes', 
+        ignored_users=ignored_users,
+        ignored_users_callback=save_ignored_users,
+        nr_of_users_to_follow_per_bot=NR_OF_USERS_TO_FOLLOW_PER_BOT,
+        seconds_until_unfollow=SECONDS_UNTIL_UNFOLLOW,
         number_of_random_pins_to_repin=NUMBER_OF_RANDOM_PINS_TO_REPIN,
         gr_nr=2
     )
